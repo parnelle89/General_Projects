@@ -1,0 +1,40 @@
+<html>
+
+<head>
+	<link rel="stylesheet" href="pdf.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="print.css" type="text/css" media="print" />
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	
+	<!-- <script src="jspdf/dist/jspdf.min.js"></script> -->
+	
+	<script src="jspdf/jspdf.js"></script>
+	<script src="jspdf/jspdf.plugin.addimage.js"></script>
+	<script src="jspdf/jspdf.plugin.cell.js"></script>
+	<script src="jspdf/jspdf.plugin.from_html.js"></script>
+	<script src="jspdf/jspdf.plugin.javascript.js"></script>
+	<script src="jspdf/jspdf.plugin.sillysvgrenderer.js"></script>
+	<script src="jspdf/jspdf.plugin.split_text_to_size.js"></script>
+	<script src="jspdf/jspdf.plugin.standard_fonts_metrics.js"></script>
+
+	<script src="moment.min.js"></script>
+
+	<script src="testPDFs.js"></script>
+</head>
+
+<style>
+button {
+	padding: 10px;
+	margin: 20px;
+	border-radius: 5px;
+	border: 2px outset lightcoral;
+}
+</style>
+
+
+<body>
+
+<button id="clickMe">Generate PDF</button>
+
+
+</body>
+</html>

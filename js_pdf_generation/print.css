@@ -1,0 +1,14 @@
+table {
+	border-spacing:0px;
+	width:500px;
+}
+
+
+th {
+	background-color: skyblue;
+	border-bottom: 1px solid black;
+}
+
+h2 {
+	color:cyan;
+}
