@@ -414,8 +414,9 @@ var jsPDF = (function(global) {
 				} catch (e) {
 					var m = "Error in function " + this + "." + fn.name + ": " + e.message;
 					if(global.console) {
-						var stack = (e.stack || new Error().stack || '').split("\n");
-						console.log(m, stack.map(function(s) {
+					    var stack = (e.stack || new Error().stack || '').split("\n");
+					    // Made IE8 Supportive ~TP
+						console.log(m, $.map(stack, function(s) {
 							return s.replace(/^(.*@).+\//,'$1');
 						}).join("\n"), e);
 						if(global.alert) alert(m);
@@ -616,8 +617,20 @@ var jsPDF = (function(global) {
 			outToPages = true;
 			pages[page] = [];
 		},
+		numberPage = function() {
+			// Get height/width
+			var height = API.internal.pageSize.height;
+			var width = API.internal.pageSize.width;
+
+			// Get font size
+			var fontSize = API.internal.getFontSize();
+			API.setFontSize(8);
+			API.text(page.toString(),width / 2, height - 5);
+			API.setFontSize(fontSize);
+		},
 		_addPage = function() {
 			beginPage();
+			numberPage();
 			// Set line width
 			out(f2(lineWidth * k) + ' w');
 			// Set draw color
@@ -733,8 +746,9 @@ var jsPDF = (function(global) {
 			var data = buildDocument(), len = data.length,
 				ab = new ArrayBuffer(len), u8 = new Uint8Array(ab);
 
-			while(len--) u8[len] = data.charCodeAt(len);
-			return new Blob([ab], { type : "application/pdf" });
+			while (len--) u8[len] = data.charCodeAt(len);
+			var testBlob = new Blob([ab], { type: "application/pdf" });
+			return testBlob;
 		},
 		/**
 		 * Generates the PDF document.

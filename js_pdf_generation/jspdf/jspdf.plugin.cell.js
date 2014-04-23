@@ -122,7 +122,6 @@
             if (align === 'right') {
                 if (txt instanceof Array) {
                     for(var i = 0; i<txt.length; i++) {
-
                         var currentLine = txt[i];
                         var textSize = this.getStringUnitWidth(currentLine) * this.internal.getFontSize();
                         this.text(currentLine, x + w - textSize - padding, y + this.internal.getLineHeight()*(i+1));
@@ -130,14 +129,27 @@
                 }
             } else {
                 
+                // Check that text will fit inside box
                 var txtWidth = this.getStringUnitWidth(txt)*this.internal.getFontSize()/this.internal.scaleFactor;
+                if (txtWidth > w - 5) {
 
-                if (txtWidth > w) {
-                    // If text width is greater than width of cell, shrink text size
-                    debugger;
+                    // Find font size that will allow message to fit inside box
+                    var originalFontSize = this.internal.getFontSize();
+                    var fontIteration = 1;
+                    while (txtWidth > w - 5) {
+                        this.setFontSize(originalFontSize - fontIteration);
+                        txtWidth = this.getStringUnitWidth(txt)*this.internal.getFontSize()/this.internal.scaleFactor;
+                        fontIteration++;
+                    }
+
+                    // Write font, return font size to original size
+                    this.text(txt, x + padding, y + 7);
+                    this.setFontSize(originalFontSize);
+                } else {
+                    this.text(txt, x + padding, y + 7);
                 }
 
-                this.text(txt, x + padding, y + 7);
+                
             }
         }
         setLastCellPosition(x, y, w, h, ln);
@@ -273,9 +285,15 @@
             for (i = 0, ln = headerNames.length; i < ln; i += 1) {
                 header = headerNames[i];
 
-                columnMatrix[header] = data.map(
-                    func
-                );
+                // Check for IE8
+                if (typeof (data.map) === "undefined") {
+                    // IE8, use jQuery map
+                    columnMatrix[header] = $.map(data, func);
+                } else {
+                    // not IE8, do normal
+                    columnMatrix[header] = data.map(func);
+                }
+                
 
                 if (autoSize) {
                     // get header width

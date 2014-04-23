@@ -172,7 +172,13 @@
 	}
 	, createDataURIFromElement = function(imageData, format) {
 		
-		var canvas = document.createElement('canvas');
+	    var canvas = document.createElement('canvas');
+	    // Check for IE8
+	    if (typeof (canvas.getContext) === "undefined") {
+	        // IE8, excanvas should be loaded, init canvas
+	        G_vmlCanvasManager.initElement(canvas);
+	    }
+
 	    canvas.width = imageData.clientWidth || imageData.width;
 	    canvas.height = imageData.clientHeight || imageData.height;
 	
